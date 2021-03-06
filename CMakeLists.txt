@@ -14,19 +14,24 @@ LANGUAGES CXX
 add_subdirectory("glfw")
 
 find_package(Vulkan REQUIRED FATAL_ERROR)
-message("GLSC Executable: " ${Vulkan_GLSLC_EXECUTABLE})
 
-add_executable (${PROJECT_NAME} "Renderer.cpp")
+add_executable (${PROJECT_NAME} "Renderer.cpp" "shaders/shader.vert" "shaders/shader.frag")
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_include_directories(${PROJECT_NAME} PUBLIC "glfw/include" ${Vulkan_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
 
-#file(GLOB VERT ${PROJECT_SOURCE_DIR}/shaders/*.vert)
-#file(GLOB FRAG ${PROJECT_SOURCE_DIR}/shaders/*.frag)
-
+#Compile Shaders directly to output dir to be read
 add_custom_command(TARGET ${PROJECT_NAME}
     PRE_BUILD
-    COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${PROJECT_SOURCE_DIR}/shaders/shader.vert -o vert.spv
+    COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${PROJECT_SOURCE_DIR}/shaders/shader.vert -o ${CMAKE_BINARY_DIR}/shaders/vert.spv
+    COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${PROJECT_SOURCE_DIR}/shaders/shader.frag -o ${CMAKE_BINARY_DIR}/shaders/frag.spv
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/shaders
     USES_TERMINAL
 )
+
+#copy them to output dir so that the program can read them
+#add_custom_command(TARGET ${PROJECT_NAME}
+#    PRE_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/shaders/vert.spv ${CMAKE_BINARY_DIR}/shaders/
+#    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/shaders/frag.spv ${CMAKE_BINARY_DIR}/shaders/
+#)
