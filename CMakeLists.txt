@@ -1,9 +1,8 @@
-﻿# CMakeList.txt : CMake project for Renderer, include source and define
-# project specific logic here.
-#
+﻿#Tested on Windows 10 with Visual studio 2019 and MacOS Big Sur command line build using make
+#check readme for build instructions
 cmake_minimum_required (VERSION 3.8)
 
-set(PROJECT_NAME "Renderer")
+set(PROJECT_NAME "renderer")
 
 project (${PROJECT_NAME} 
 VERSION 1.0
@@ -20,16 +19,11 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_include_directories(${PROJECT_NAME} PUBLIC "glfw/include" ${Vulkan_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
 
-#check for shaders dir in binary location and if doesn't exist make it
-if(NOT EXISTS ${CMAKE_BINARY_DIR}/shaders/)
-	file(MAKE_DIRECTORY ${directory})
-endif()
 
 #Compile Shaders directly to output dir to be read
-add_custom_command(TARGET ${PROJECT_NAME}
-    PRE_BUILD
-    COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${PROJECT_SOURCE_DIR}/shaders/shader.vert -o ${CMAKE_BINARY_DIR}/shaders/vert.spv
-    COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${PROJECT_SOURCE_DIR}/shaders/shader.frag -o ${CMAKE_BINARY_DIR}/shaders/frag.spv
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/shaders
-    USES_TERMINAL
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders
+    COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${PROJECT_SOURCE_DIR}/shaders/shader.vert -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/vert.spv
+    COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${PROJECT_SOURCE_DIR}/shaders/shader.frag -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/frag.spv
 )
