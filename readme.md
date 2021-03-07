@@ -9,3 +9,5 @@
 - make
 ## on Windows Visual studio 2019
 - open build folder from visual studio 2019 with File --> Open Folder
+- build
+- profit
