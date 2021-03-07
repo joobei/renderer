@@ -11,12 +11,13 @@ LANGUAGES CXX
 )
 
 add_subdirectory("glfw")
+add_subdirectory("glm")
 
 find_package(Vulkan REQUIRED FATAL_ERROR)
 
-add_executable (${PROJECT_NAME} "Renderer.cpp" "shaders/shader.vert" "shaders/shader.frag")
+add_executable (${PROJECT_NAME} "Renderer.cpp")
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
-target_include_directories(${PROJECT_NAME} PUBLIC "glfw/include" ${Vulkan_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC "glfw/include" ${Vulkan_INCLUDE_DIRS} "glm")
 target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
 
 
@@ -24,6 +25,6 @@ target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders
-    COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${PROJECT_SOURCE_DIR}/shaders/shader.vert -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/vert.spv
-    COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${PROJECT_SOURCE_DIR}/shaders/shader.frag -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/frag.spv
+    COMMAND ${Vulkan_GLSLC_EXECUTABLE} -fshader-stage=vert ${PROJECT_SOURCE_DIR}/shaders/vertex.glsl -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/vert.spv
+    COMMAND ${Vulkan_GLSLC_EXECUTABLE} -fshader-stage=frag ${PROJECT_SOURCE_DIR}/shaders/fragment.glsl -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/frag.spv
 )
