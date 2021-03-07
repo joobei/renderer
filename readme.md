@@ -1,4 +1,4 @@
-# Toy renderer vased on vulkan-tutorial.
+# Toy renderer based on vulkan-tutorial.
 
 ## Build Instructions
 - Download and install VulkanSDK https://vulkan.lunarg.com/
