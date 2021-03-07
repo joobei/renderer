@@ -1,2 +1,6 @@
-﻿.vs
+.vs
 out
+build/CMakeFiles
+build/glfw
+build/shaders
+build
