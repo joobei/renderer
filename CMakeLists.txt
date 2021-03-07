@@ -20,6 +20,11 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_include_directories(${PROJECT_NAME} PUBLIC "glfw/include" ${Vulkan_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
 
+#check for shaders dir in binary location and if doesn't exist make it
+if(NOT EXISTS ${CMAKE_BINARY_DIR}/shaders/)
+	file(MAKE_DIRECTORY ${directory})
+endif()
+
 #Compile Shaders directly to output dir to be read
 add_custom_command(TARGET ${PROJECT_NAME}
     PRE_BUILD
@@ -28,10 +33,3 @@ add_custom_command(TARGET ${PROJECT_NAME}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/shaders
     USES_TERMINAL
 )
-
-#copy them to output dir so that the program can read them
-#add_custom_command(TARGET ${PROJECT_NAME}
-#    PRE_BUILD
-#    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/shaders/vert.spv ${CMAKE_BINARY_DIR}/shaders/
-#    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/shaders/frag.spv ${CMAKE_BINARY_DIR}/shaders/
-#)
