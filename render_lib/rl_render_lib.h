@@ -80,7 +80,7 @@ private:
 	std::vector<const char*> getRequiredExtensions();
 	bool check_validation_layer_support();
 	QueueFamilyIndices find_queue_families(VkPhysicalDevice);
-	uint32_t findMemoryType(uint32_t, VkMemoryPropertyFlags);
+	uint32_t find_memory_type(uint32_t, VkMemoryPropertyFlags);
 	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT&);
 	VkShaderModule create_shader_module(const std::vector<char>&);
 	bool check_device_extension_support(VkPhysicalDevice);
