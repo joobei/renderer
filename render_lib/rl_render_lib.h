@@ -14,6 +14,9 @@
 #include <set>
 #include <array>
 
+const bool enableValidationLayers = true;
+
+
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
 
@@ -39,11 +42,6 @@ const std::vector<const char*> deviceExtensions = {
 	VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
-#ifdef NDEBUG
-const bool enableValidationLayers = false;
-#else
-const bool enableValidationLayers = true;
-#endif
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
 	std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
