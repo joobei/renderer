@@ -1,7 +1,7 @@
 #include "rl_render_lib.h"
 
-void Renderer::createCommandPool() {
-    QueueFamilyIndices queueFamilyIndices = findQueueFamilies(physicalDevice);
+void Renderer::create_command_pool() {
+    QueueFamilyIndices queueFamilyIndices = find_queue_families(physicalDevice);
 
     VkCommandPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;

@@ -1,6 +1,6 @@
 #include "rl_render_lib.h"
 
-void Renderer::pickPhysicalDevice() {
+void Renderer::pick_physical_device() {
     uint32_t deviceCount = 0;
     vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 
@@ -12,7 +12,7 @@ void Renderer::pickPhysicalDevice() {
     vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
     for (const auto& device : devices) {
-        if (isDeviceSuitable(device)) {
+        if (is_device_suitable(device)) {
             physicalDevice = device;
             break;
         }

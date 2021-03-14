@@ -1,7 +1,24 @@
 #include "rl_render_lib.h"
 
-Renderer::create_instance {
-    if (enableValidationLayers && !checkValidationLayerSupport()) {
+void Renderer::init_vulkan() {
+    create_instance();
+    setup_debug_messenger();
+    create_surface();
+    pick_physical_device();
+    create_logical_device();
+    create_swapchain();
+    create_image_views();
+    create_render_pass();
+    create_graphics_pipeline();
+    create_frame_buffers();
+    create_command_pool();
+    create_vertex_buffer();
+    create_command_buffers();
+    create_sync_objects();
+}
+
+void Renderer::create_instance() {
+    if (enableValidationLayers && !check_validation_layer_support()) {
         throw std::runtime_error("validation layers requested, but not available!");
     }
 
@@ -151,21 +168,21 @@ VkShaderModule Renderer::create_shader_module(const std::vector<char>& code) {
     return shaderModule;
 }
 
-bool Renderer::isDeviceSuitable(VkPhysicalDevice device) {
-    QueueFamilyIndices indices = findQueueFamilies(device);
+bool Renderer::is_device_suitable(VkPhysicalDevice device) {
+    QueueFamilyIndices indices = find_queue_families(device);
 
-    bool extensionsSupported = checkDeviceExtensionSupport(device);
+    bool extensionsSupported = check_device_extension_support(device);
 
     bool swapChainAdequate = false;
     if (extensionsSupported) {
-        SwapChainSupportDetails swapChainSupport = querySwapChainSupport(device);
+        SwapChainSupportDetails swapChainSupport = query_swap_chain_support(device);
         swapChainAdequate = !swapChainSupport.formats.empty() && !swapChainSupport.presentModes.empty();
     }
 
     return indices.isComplete() && extensionsSupported && swapChainAdequate;
 }
 
-bool Renderer::checkDeviceExtensionSupport(VkPhysicalDevice device) {
+bool Renderer::check_device_extension_support(VkPhysicalDevice device) {
     uint32_t extensionCount;
     vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
 
@@ -181,7 +198,7 @@ bool Renderer::checkDeviceExtensionSupport(VkPhysicalDevice device) {
     return requiredExtensions.empty();
 }
 
-QueueFamilyIndices Renderer::findQueueFamilies(VkPhysicalDevice device) {
+QueueFamilyIndices Renderer::find_queue_families(VkPhysicalDevice device) {
     QueueFamilyIndices indices;
 
     uint32_t queueFamilyCount = 0;
@@ -227,26 +244,8 @@ std::vector<const char*> Renderer::getRequiredExtensions() {
     return extensions;
 }
 
-static std::vector<char> readFile(const std::string& filename) {
-    std::ifstream file(filename, std::ios::ate | std::ios::binary);
-
-    if (!file.is_open()) {
-        throw std::runtime_error("failed to open file!");
+void Renderer::create_surface() {
+    if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+        throw std::runtime_error("failed to create window surface!");
     }
-
-    size_t fileSize = (size_t)file.tellg();
-    std::vector<char> buffer(fileSize);
-
-    file.seekg(0);
-    file.read(buffer.data(), fileSize);
-
-    file.close();
-
-    return buffer;
-}
-
-static VKAPI_ATTR VkBool32 VKAPI_CALL Renderer::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
-    std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-
-    return VK_FALSE;
 }

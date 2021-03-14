@@ -14,7 +14,7 @@ LANGUAGES CXX
 add_subdirectory("render_lib")
 
 find_package(Vulkan REQUIRED FATAL_ERROR)
-
+set(Vulkan_GLSLC_EXECUTABLE "C:\\VulkanSDK\\1.2.162.1\\Bin\\glslc.exe")
 add_executable (${PROJECT_NAME} Renderer.cpp)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_include_directories(${PROJECT_NAME} PUBLIC)
@@ -28,3 +28,5 @@ add_custom_command(
     COMMAND ${Vulkan_GLSLC_EXECUTABLE} -fshader-stage=vert ${PROJECT_SOURCE_DIR}/shaders/vertex.glsl -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/vert.spv
     COMMAND ${Vulkan_GLSLC_EXECUTABLE} -fshader-stage=frag ${PROJECT_SOURCE_DIR}/shaders/fragment.glsl -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/frag.spv
 )
+
+

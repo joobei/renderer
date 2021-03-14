@@ -17,7 +17,7 @@ void Renderer::DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMe
     }
 }
 
-void Renderer::setupDebugMessenger() {
+void Renderer::setup_debug_messenger() {
     if (!enableValidationLayers) return;
 
     VkDebugUtilsMessengerCreateInfoEXT createInfo;

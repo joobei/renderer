@@ -1,11 +1,11 @@
 #include "rl_render_lib.h"
 
-void Renderer::createGraphicsPipeline() {
+void Renderer::create_graphics_pipeline() {
     auto vertShaderCode = readFile("shaders/vert.spv");
     auto fragShaderCode = readFile("shaders/frag.spv");
 
-    VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
-    VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
+    VkShaderModule vertShaderModule = create_shader_module(vertShaderCode);
+    VkShaderModule fragShaderModule = create_shader_module(fragShaderCode);
 
     VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
     vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
