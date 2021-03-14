@@ -2,7 +2,7 @@
 #check readme for build instructions
 cmake_minimum_required (VERSION 3.8)
 
-set(PROJECT_NAME "renderer")
+set(PROJECT_NAME "dfgi")
 
 project (${PROJECT_NAME} 
 VERSION 1.0
