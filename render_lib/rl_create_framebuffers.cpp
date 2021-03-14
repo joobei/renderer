@@ -1,6 +1,6 @@
 #include "rl_render_lib.h"
 
-void Renderer::createFramebuffers() {
+void Renderer::create_frame_buffers() {
     swapChainFramebuffers.resize(swapChainImageViews.size());
 
     for (size_t i = 0; i < swapChainImageViews.size(); i++) {
