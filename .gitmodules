@@ -1,6 +1,6 @@
 [submodule "glfw"]
-	path = glfw
+	path = render_lib/glfw
 	url = git@github.com:glfw/glfw.git
 [submodule "glm"]
-	path = glm
+	path = render_lib/glm
 	url = git@github.com:g-truc/glm.git
