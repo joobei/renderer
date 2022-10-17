@@ -14,7 +14,7 @@ LANGUAGES CXX
 add_subdirectory("render_lib")
 
 find_package(Vulkan REQUIRED FATAL_ERROR)
-set(Vulkan_GLSLC_EXECUTABLE "D:\\dev\\Vulkan_sdk\\Bin\\glslc.exe")
+set(Vulkan_GLSLC_EXECUTABLE "glslc")
 add_executable (${PROJECT_NAME} Renderer.cpp)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_include_directories(${PROJECT_NAME} PUBLIC)
