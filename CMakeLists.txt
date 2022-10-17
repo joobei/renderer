@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 3.8)
 set(PROJECT_NAME "renderer")
 
 project (${PROJECT_NAME} 
-VERSION 1.0
+VERSION 0.1
 DESCRIPTION "Experimental Renderer"
 LANGUAGES CXX
 )
@@ -21,7 +21,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC)
 target_link_libraries(${PROJECT_NAME} render_lib)
 
 
-#Compile Shaders directly to output dir to be read
+#Compile Shaders directly to output dir (to be read by binary)
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders
