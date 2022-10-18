@@ -5,3 +5,6 @@ build/glfw
 build/shaders
 build
 .vscode
+.idea
+cmake-build-debug
+.DS_Store
