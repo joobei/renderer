@@ -14,8 +14,8 @@ LANGUAGES CXX
 add_subdirectory("render_lib")
 
 find_package(Vulkan REQUIRED FATAL_ERROR)
-set(Vulkan_GLSLC_EXECUTABLE "glslc")
-add_executable (${PROJECT_NAME} Renderer.cpp)
+set(Vulkan_GLSLC_EXECUTABLE glslc)
+add_executable (${PROJECT_NAME} Renderer.cpp input.cpp)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_include_directories(${PROJECT_NAME} PUBLIC)
 target_link_libraries(${PROJECT_NAME} render_lib)
