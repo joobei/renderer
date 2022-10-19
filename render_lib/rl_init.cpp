@@ -45,9 +45,8 @@ void Renderer::create_instance() {
         createInfo.ppEnabledLayerNames = validationLayers.data();
 
         populateDebugMessengerCreateInfo(debugCreateInfo);
-        createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
-    }
-    else {
+        createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT *) &debugCreateInfo;
+    } else {
         createInfo.enabledLayerCount = 0;
 
         createInfo.pNext = nullptr;
@@ -68,12 +67,11 @@ void Renderer::initWindow() {
 }
 
 
-
 uint32_t Renderer::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
 
     VkPhysicalDeviceMemoryProperties memProperties;
     vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
-    
+
     for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
         if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties) {
             return i;
@@ -84,6 +82,7 @@ uint32_t Renderer::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags pro
 }
 
 void Renderer::mainLoop() {
+    glfwSetKeyCallback(window,&this->keyCallback);
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         drawFrame();
@@ -92,31 +91,38 @@ void Renderer::mainLoop() {
     vkDeviceWaitIdle(device);
 }
 
-void Renderer::cleanupSwapChain() {
-        for (auto framebuffer : swapChainFramebuffers) {
-            vkDestroyFramebuffer(device, framebuffer, nullptr);
-        }
-
-        vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
-
-        vkDestroyPipeline(device, graphicsPipeline, nullptr);
-        vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
-        vkDestroyRenderPass(device, renderPass, nullptr);
-
-        for (auto imageView : swapChainImageViews) {
-            vkDestroyImageView(device, imageView, nullptr);
-        }
-
-        vkDestroySwapchainKHR(device, swapChain, nullptr);
+void Renderer::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(window, GL_TRUE);
     }
+}
+
+void Renderer::cleanupSwapChain() {
+    for (auto framebuffer: swapChainFramebuffers) {
+        vkDestroyFramebuffer(device, framebuffer, nullptr);
+    }
+
+    vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
+
+    vkDestroyPipeline(device, graphicsPipeline, nullptr);
+    vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+    vkDestroyRenderPass(device, renderPass, nullptr);
+
+    for (auto imageView: swapChainImageViews) {
+        vkDestroyImageView(device, imageView, nullptr);
+    }
+
+    vkDestroySwapchainKHR(device, swapChain, nullptr);
+}
 
 
 void Renderer::cleanup() {
     cleanupSwapChain();
-    
+
     vkDestroyBuffer(device, vertexBuffer, nullptr);
     vkFreeMemory(device, vertexBufferMemory, nullptr);
-    
+
     for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
         vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
         vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
@@ -125,7 +131,7 @@ void Renderer::cleanup() {
 
     vkDestroyCommandPool(device, commandPool, nullptr);
 
-    for (auto framebuffer : swapChainFramebuffers) {
+    for (auto framebuffer: swapChainFramebuffers) {
         vkDestroyFramebuffer(device, framebuffer, nullptr);
     }
 
@@ -133,7 +139,7 @@ void Renderer::cleanup() {
     vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
     vkDestroyRenderPass(device, renderPass, nullptr);
 
-    for (auto imageView : swapChainImageViews) {
+    for (auto imageView: swapChainImageViews) {
         vkDestroyImageView(device, imageView, nullptr);
     }
 
@@ -153,13 +159,11 @@ void Renderer::cleanup() {
 }
 
 
-
-
-VkShaderModule Renderer::create_shader_module(const std::vector<char>& code) {
+VkShaderModule Renderer::create_shader_module(const std::vector<char> &code) {
     VkShaderModuleCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
     createInfo.codeSize = code.size();
-    createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+    createInfo.pCode = reinterpret_cast<const uint32_t *>(code.data());
 
     VkShaderModule shaderModule;
     if (vkCreateShaderModule(device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
@@ -190,9 +194,9 @@ bool Renderer::check_device_extension_support(VkPhysicalDevice device) {
     std::vector<VkExtensionProperties> availableExtensions(extensionCount);
     vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data());
 
-    std::set<std::string> requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
+    std::set < std::string > requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
 
-    for (const auto& extension : availableExtensions) {
+    for (const auto &extension: availableExtensions) {
         requiredExtensions.erase(extension.extensionName);
     }
 
@@ -209,7 +213,7 @@ QueueFamilyIndices Renderer::find_queue_families(VkPhysicalDevice device) {
     vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
 
     int i = 0;
-    for (const auto& queueFamily : queueFamilies) {
+    for (const auto &queueFamily: queueFamilies) {
         if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
             indices.graphicsFamily = i;
         }
@@ -231,12 +235,12 @@ QueueFamilyIndices Renderer::find_queue_families(VkPhysicalDevice device) {
     return indices;
 }
 
-std::vector<const char*> Renderer::getRequiredExtensions() {
+std::vector<const char *> Renderer::getRequiredExtensions() {
     uint32_t glfwExtensionCount = 0;
-    const char** glfwExtensions;
+    const char **glfwExtensions;
     glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 
-    std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
+    std::vector<const char *> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
 
     if (enableValidationLayers) {
         extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
