@@ -59,6 +59,7 @@ public:
 	void create_logical_device();
 	void mainLoop();
 	void cleanup();
+	GLFWwindow* window;
 private:
 	void create_render_pass();
 	void create_image_views();
@@ -75,6 +76,7 @@ private:
 	bool is_device_suitable(VkPhysicalDevice);
 	void pick_physical_device();
 	void cleanupSwapChain();
+    static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	VkSurfaceFormatKHR choose_swap_surface_format(const std::vector<VkSurfaceFormatKHR>&);
 	VkPresentModeKHR choose_swap_present_mode(const std::vector<VkPresentModeKHR>&);
 	VkExtent2D choose_swap_extent(const VkSurfaceCapabilitiesKHR&);
@@ -87,7 +89,6 @@ private:
 	bool check_device_extension_support(VkPhysicalDevice);
 	void setup_debug_messenger();
 	SwapChainSupportDetails query_swap_chain_support(VkPhysicalDevice);
-	GLFWwindow* window;
 
 	const std::vector<const char*> validationLayers = {
 		"VK_LAYER_KHRONOS_validation"
@@ -168,8 +169,6 @@ private:
 		{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
 		{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
 	};
-
-
 };
 
 static std::vector<char> readFile(const std::string& filename) {
