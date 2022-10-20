@@ -13,8 +13,13 @@
 #include <optional>
 #include <set>
 #include <array>
+#include <signal.h>
 
+#ifdef NDEBUG
+const bool enableValidationLayers = false;
+#else
 const bool enableValidationLayers = true;
+#endif
 
 
 const uint32_t WIDTH = 800;
@@ -45,8 +50,9 @@ const std::vector<const char*> deviceExtensions = {
 
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
-	std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-
+	std::cerr << pCallbackData->pMessage << std::endl;
+    std::cerr.flush();
+    raise(SIGTRAP);
 	return VK_FALSE;
 }
 
