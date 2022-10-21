@@ -24,9 +24,9 @@ const int MAX_FRAMES_IN_FLIGHT = 2;
 
 
 struct SwapChainSupportDetails {
-		VkSurfaceCapabilitiesKHR capabilities;
-		std::vector<VkSurfaceFormatKHR> formats;
-		std::vector<VkPresentModeKHR> presentModes;
+	VkSurfaceCapabilitiesKHR capabilities;
+	std::vector<VkSurfaceFormatKHR> formats;
+	std::vector<VkPresentModeKHR> presentModes;
 };
 
 struct QueueFamilyIndices {
@@ -172,19 +172,25 @@ private:
 };
 
 static std::vector<char> readFile(const std::string& filename) {
-	std::ifstream file(filename, std::ios::ate | std::ios::binary);
-
-	if (!file.is_open()) {
-		throw std::runtime_error("failed to open file!");
+	std::ifstream shaderFile;
+	try {
+		shaderFile.open(filename, std::ios::binary | std::ios::ate);
+	
+	}
+	catch (std::system_error& e) {
+		std::cerr << e.code().message() << std::endl;
 	}
 
-	size_t fileSize = (size_t)file.tellg();
-	std::vector<char> buffer(fileSize);
+	if (shaderFile.is_open()) {
+		size_t fileSize = (size_t)shaderFile.tellg();
+		std::vector<char> buffer(fileSize);
 
-	file.seekg(0);
-	file.read(buffer.data(), fileSize);
+		shaderFile.seekg(0);
+		shaderFile.read(buffer.data(), fileSize);
 
-	file.close();
+		shaderFile.close();
 
-	return buffer;
+		return buffer;
+	}
+
 }
