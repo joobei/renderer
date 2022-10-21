@@ -4,3 +4,6 @@
 [submodule "glm"]
 	path = render_lib/glm
 	url = git@github.com:g-truc/glm.git
+[submodule "dependencies/cgltf"]
+	path = dependencies/cgltf
+	url = git@github.com:jkuhlmann/cgltf.git
