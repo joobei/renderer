@@ -1,7 +1,7 @@
 #Tested on Windows 10 with Visual studio 2019 and MacOS Big Sur command line build using make
 #check readme for build instructions
 cmake_minimum_required (VERSION 3.8)
-
+add_compile_options(-w)
 set(PROJECT_NAME "renderer")
 
 project (${PROJECT_NAME} 
@@ -17,7 +17,6 @@ find_package(Vulkan REQUIRED FATAL_ERROR)
 set(Vulkan_GLSLC_EXECUTABLE glslc)
 add_executable (${PROJECT_NAME} Renderer.cpp)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
-target_include_directories(${PROJECT_NAME} PUBLIC)
 target_link_libraries(${PROJECT_NAME} render_lib)
 
 

@@ -14,6 +14,7 @@
 #include <set>
 #include <array>
 #include <signal.h>
+#include "cgltf/cgltf.h"
 
 #ifdef NDEBUG
 const bool enableValidationLayers = false;
@@ -170,11 +171,13 @@ private:
 
 	};
 
-	const std::vector<Vertex> vertices = {
-		{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-		{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-		{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
-	};
+std::vector<Vertex> vertices;
+//	= {
+//		{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+//		{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+//		{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+//	};
+
 };
 
 static std::vector<char> readFile(const std::string& filename) {
