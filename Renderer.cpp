@@ -1,3 +1,4 @@
+#define CGLTF_IMPLEMENTATION
 #include "render_lib/rl_render_lib.h"
 
 int main() {

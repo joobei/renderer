@@ -1,4 +1,3 @@
-#define CGLTF_IMPLEMENTATION
 #include "rl_render_lib.h"
 
 void Renderer::create_vertex_buffer() {
@@ -6,17 +5,18 @@ void Renderer::create_vertex_buffer() {
     bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 
     //new CGLTF code to import blender mesh ============
-    cgltf_options options = {};
-    cgltf_data* susanne_file = NULL;
+    cgltf_options options = {cgltf_file_type_gltf};
+    cgltf_data* susanne_mesh = NULL;
 
-    cgltf_result result = cgltf_parse_file(&options, "susanne.glb", &susanne_file);
+    cgltf_result result = cgltf_parse_file(&options, "susanne.gltf", &susanne_mesh);
 
     if(result == cgltf_result_success) {
-        std::cout << susanne_file->meshes_count;
+        //std::cout << susanne_mesh->meshes_count;
+
     }
     else
     {
-        std::cerr << "cgltf load failed" << std::endl;
+        std::cerr << "cgltf load failed " << result << std::endl;
     }
     // end new code ======================================
 
