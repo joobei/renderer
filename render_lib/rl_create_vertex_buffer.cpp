@@ -1,28 +1,26 @@
 #include "rl_render_lib.h"
 
 void Renderer::create_vertex_buffer() {
-    VkBufferCreateInfo bufferInfo{};
-    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-
-    //new CGLTF code to import blender mesh ============
+    
     cgltf_options options = {cgltf_file_type_gltf};
     cgltf_data* susanne_mesh = NULL;
-
     cgltf_result result = cgltf_parse_file(&options, "susanne.gltf", &susanne_mesh);
 
+    size_t susanne_size = -1;
+    
     if(result == cgltf_result_success) {
-        //std::cout << susanne_mesh->meshes_count;
-
+        memset(&options, 0, sizeof(cgltf_options));
+        cgltf_load_buffers(& options, susanne_mesh, "susanne.gltf");
+        susanne_size = susanne_mesh->buffers[0].size;
     }
     else
     {
         std::cerr << "cgltf load failed " << result << std::endl;
     }
-    // end new code ======================================
 
-
-    bufferInfo.size = sizeof(vertices[0]) * vertices.size();
-
+    VkBufferCreateInfo bufferInfo{};
+    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    bufferInfo.size = susanne_size;
     bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
     bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
@@ -44,9 +42,8 @@ void Renderer::create_vertex_buffer() {
 
     vkBindBufferMemory(device, vertexBuffer, vertexBufferMemory, 0);
 
-
     void* data;
     vkMapMemory(device, vertexBufferMemory, 0, bufferInfo.size, 0, &data);
-    memcpy(data, vertices.data(), (size_t) bufferInfo.size);
+    memcpy(data, susanne_mesh->buffers[0].data, bufferInfo.size);
     vkUnmapMemory(device, vertexBufferMemory);
 }

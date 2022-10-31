@@ -46,18 +46,23 @@ struct QueueFamilyIndices {
 
 const std::vector<const char*> deviceExtensions = {
 	VK_KHR_SWAPCHAIN_EXTENSION_NAME
+#ifdef APPLE
 	,"VK_KHR_portability_subset"
+#endif // APPLE
+
 };
 
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
 	std::cerr << pCallbackData->pMessage << std::endl;
     std::cerr.flush();
+#ifdef APPLE
     raise(SIGTRAP);
+#endif
 	return VK_FALSE;
 }
 
-class Renderer {
+struct Renderer {
 public:
 	void create_instance();
 	void drawFrame();
@@ -172,6 +177,7 @@ private:
 	};
 
 std::vector<Vertex> vertices;
+// simple triangle for debugging purposes
 //	= {
 //		{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
 //		{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},

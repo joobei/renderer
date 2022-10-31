@@ -32,7 +32,9 @@ void Renderer::create_instance() {
 
     VkInstanceCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+#ifdef APPLE
     createInfo.flags = VkInstanceCreateFlagBits::VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+#endif
     createInfo.pApplicationInfo = &appInfo;
 
     auto extensions = getRequiredExtensions();
@@ -232,7 +234,9 @@ std::vector<const char *> Renderer::getRequiredExtensions() {
     if (enableValidationLayers) {
         extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
     }
+#ifdef APPLE
     extensions.push_back("VK_KHR_portability_enumeration");
+#endif
 
     return extensions;
 }
