@@ -46,7 +46,7 @@ struct QueueFamilyIndices {
 
 const std::vector<const char*> deviceExtensions = {
 	VK_KHR_SWAPCHAIN_EXTENSION_NAME
-#ifdef APPLE
+#ifdef __APPLE__
 	,"VK_KHR_portability_subset"
 #endif // APPLE
 
@@ -56,7 +56,7 @@ const std::vector<const char*> deviceExtensions = {
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
 	std::cerr << pCallbackData->pMessage << std::endl;
     std::cerr.flush();
-#ifdef APPLE
+#ifdef __APPLE__
     raise(SIGTRAP);
 #endif
 	return VK_FALSE;
