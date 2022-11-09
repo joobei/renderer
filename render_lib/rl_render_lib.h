@@ -72,6 +72,7 @@ public:
 	void mainLoop();
 	void cleanup();
 	GLFWwindow* window;
+    cgltf_data* susanne_mesh = NULL;
 private:
 	void create_render_pass();
 	void create_image_views();

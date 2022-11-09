@@ -234,7 +234,7 @@ std::vector<const char *> Renderer::getRequiredExtensions() {
     if (enableValidationLayers) {
         extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
     }
-#ifdef __APPLE__
+#ifdef __APPLE__ //so long as molten_vk is needed in MacOS
     extensions.push_back("VK_KHR_portability_enumeration");
 #endif
 

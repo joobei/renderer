@@ -3,7 +3,6 @@
 void Renderer::create_vertex_buffer() {
     
     cgltf_options options = {cgltf_file_type_gltf};
-    cgltf_data* susanne_mesh = NULL;
     cgltf_result result = cgltf_parse_file(&options, "susanne.gltf", &susanne_mesh);
 
     size_t susanne_size = -1;
