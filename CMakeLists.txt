@@ -1,6 +1,6 @@
 #Tested on Windows 10 with Visual studio 2019 and MacOS Big Sur command line build using make
 #check readme for build instructions
-cmake_minimum_required (VERSION 3.23)
+cmake_minimum_required (VERSION 3.22)
 
 if(MSVC)
     add_compile_options(/w)

@@ -36,13 +36,15 @@ void Renderer::create_command_buffers() {
 
         vkCmdBindPipeline(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
         VkBuffer vertexBuffers[] = {vertexBuffer};
+        VkBuffer indexBuffers[] = {indexBuffer};
         VkDeviceSize offsets[] = {0};
         vkCmdBindVertexBuffers(commandBuffers[i], 0, 1, vertexBuffers, offsets);
+        VkIndexType indexType = VK_INDEX_TYPE_UINT16;
+        vkCmdBindIndexBuffer(commandBuffers[i],indexBuffer,0,indexType);
         uint32_t vertex_count = susanne_mesh->accessors[0].count;
         uint32_t index_count = susanne_mesh->accessors[3].count;
-        vkCmdDraw(commandBuffers[i], vertex_count, 1, 0, 0);
-//        vkCmdDrawIndexed(commandBuffers[i],index_count,1,0,0,0);
-
+        // vkCmdDraw(commandBuffers[i], vertex_count, 1, 0, 0); //left here for comparison
+        vkCmdDrawIndexed(commandBuffers[i],index_count,1,0,0,0);
         vkCmdEndRenderPass(commandBuffers[i]);
 
         if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {

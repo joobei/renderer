@@ -16,11 +16,11 @@
 #include <signal.h>
 #include "cgltf/cgltf.h"
 
-#ifdef NDEBUG
-const bool enableValidationLayers = false;
-#else
+// #ifdef NDEBUG
+// const bool enableValidationLayers = false;
+// #else
 const bool enableValidationLayers = true;
-#endif
+// #endif
 
 
 const uint32_t WIDTH = 800;
@@ -79,6 +79,7 @@ private:
 	void create_frame_buffers();
 	void create_command_pool();
 	void create_vertex_buffer();
+    void create_index_buffer();
 	void create_command_buffers();
 	void create_graphics_pipeline();
 	void create_sync_objects();
@@ -137,9 +138,9 @@ private:
 	std::vector<VkFence> imagesInFlight;
 	size_t currentFrame = 0;
 
-	VkBuffer vertexBuffer;
-	VkDeviceMemory vertexBufferMemory;
-
+	VkBuffer vertexBuffer, indexBuffer;
+	VkDeviceMemory vertexBufferMemory,indexBufferMemory;
+	
 	VkResult CreateDebugUtilsMessengerEXT();
 	void DestroyDebugUtilsMessengerEXT();
 

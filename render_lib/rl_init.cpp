@@ -13,6 +13,7 @@ void Renderer::init_vulkan() {
     create_frame_buffers();
     create_command_pool();
     create_vertex_buffer();
+    create_index_buffer();
     create_command_buffers();
     create_sync_objects();
 }
@@ -123,7 +124,9 @@ void Renderer::cleanup() {
     cleanupSwapChain();
 
     vkDestroyBuffer(device, vertexBuffer, nullptr);
+    vkDestroyBuffer(device, indexBuffer, nullptr);
     vkFreeMemory(device, vertexBufferMemory, nullptr);
+    vkFreeMemory(device, indexBufferMemory, nullptr);
 
     for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
         vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
