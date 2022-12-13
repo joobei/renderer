@@ -1,8 +1,8 @@
 #include "rl_render_lib.h"
 
 void Renderer::create_graphics_pipeline() {
-    auto vertShaderCode = readFile("shaders/vert.spv");
-    auto fragShaderCode = readFile("shaders/frag.spv");
+    auto vertShaderCode = readFile("shaders/vertex.spv");
+    auto fragShaderCode = readFile("shaders/fragment.spv");
 
     VkShaderModule vertShaderModule = create_shader_module(vertShaderCode);
     VkShaderModule fragShaderModule = create_shader_module(fragShaderCode);

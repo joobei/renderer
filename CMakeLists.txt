@@ -21,18 +21,24 @@ LANGUAGES CXX
 
 add_subdirectory("render_lib")
 
-find_package(Vulkan REQUIRED FATAL_ERROR)
-add_executable (${PROJECT_NAME} Renderer.cpp)
+find_package(Vulkan REQUIRED)
+
+# Build HLSL shaders
+add_custom_target(shaders)
+
+function(compile_shader SHADER_NAME SHADER_TYPE)
+    add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders
+            COMMAND ${Vulkan_GLSLC_EXECUTABLE} -fshader-stage=${SHADER_TYPE} ${PROJECT_SOURCE_DIR}/shaders/${SHADER_NAME}.glsl -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/${SHADER_NAME}.spv
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/shaders
+            COMMENT "Compiling shader.${SHADER} to ${SHADER}.spv")
+endfunction()
+
+
+
+add_executable (${PROJECT_NAME} Renderer.cpp shaders/vertex.glsl shaders/fragment.glsl)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_link_libraries(${PROJECT_NAME} render_lib)
 
-
-#Compile Shaders directly to output dir (to be read by binary)
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders
-    COMMAND ${Vulkan_GLSLC_EXECUTABLE} -fshader-stage=vert ${PROJECT_SOURCE_DIR}/shaders/vertex.glsl -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/vert.spv
-    COMMAND ${Vulkan_GLSLC_EXECUTABLE} -fshader-stage=frag ${PROJECT_SOURCE_DIR}/shaders/fragment.glsl -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/frag.spv
-)
-
-
+compile_shader("vertex" "vert")
+compile_shader("fragment" "frag")

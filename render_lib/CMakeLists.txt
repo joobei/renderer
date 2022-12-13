@@ -4,7 +4,7 @@ VERSION 1.0
 DESCRIPTION "Renderer Lib"
 LANGUAGES CXX
 )
-find_package(Vulkan REQUIRED FATAL_ERROR)
+find_package(Vulkan REQUIRED)
 
 
 add_subdirectory("glfw")
