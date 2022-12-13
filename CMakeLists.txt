@@ -27,18 +27,17 @@ find_package(Vulkan REQUIRED)
 add_custom_target(shaders)
 
 function(compile_shader SHADER_NAME SHADER_TYPE)
-    add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
-            COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders
-            COMMAND ${Vulkan_GLSLC_EXECUTABLE} -fshader-stage=${SHADER_TYPE} ${PROJECT_SOURCE_DIR}/shaders/${SHADER_NAME}.glsl -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/${SHADER_NAME}.spv
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/shaders
-            COMMENT "Compiling shader.${SHADER} to ${SHADER}.spv")
+    add_custom_command(
+        OUTPUT ${SHADER_NAME}.spv
+        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders
+        COMMAND ${Vulkan_GLSLC_EXECUTABLE} -fshader-stage=${SHADER_TYPE} ${PROJECT_SOURCE_DIR}/shaders/${SHADER_NAME}.glsl -o $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/shaders/${SHADER_NAME}.spv
+        DEPENDS ${PROJECT_SOURCE_DIR}/shaders/${SHADER_NAME}.glsl
+        VERBATIM)
 endfunction()
-
-
-
-add_executable (${PROJECT_NAME} Renderer.cpp shaders/vertex.glsl shaders/fragment.glsl)
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
-target_link_libraries(${PROJECT_NAME} render_lib)
 
 compile_shader("vertex" "vert")
 compile_shader("fragment" "frag")
+
+add_executable (${PROJECT_NAME} Renderer.cpp vertex.spv fragment.spv)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
+target_link_libraries(${PROJECT_NAME} render_lib)
