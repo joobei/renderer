@@ -38,7 +38,7 @@ void Renderer::create_command_buffers() {
         VkBuffer vertexBuffers[] = {vertexBuffer};
         VkBuffer indexBuffers[] = {indexBuffer};
         VkDeviceSize offsets[] = {0};
-        vkCmdBindVertexBuffers(commandBuffers[i], 0, 1, vertexBuffers, offsets);
+        vkCmdBindVertexBuffers(commandBuffers[i], 0, 1, vertexBuffers, &(susanne_mesh->accessors[0].buffer_view->offset));
         VkIndexType indexType = VK_INDEX_TYPE_UINT16;
         vkCmdBindIndexBuffer(commandBuffers[i], indexBuffer,susanne_mesh->accessors[3].buffer_view->offset, indexType);
         uint32_t vertex_count = susanne_mesh->accessors[0].count;
