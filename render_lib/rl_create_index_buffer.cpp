@@ -4,9 +4,8 @@ void Renderer::create_index_buffer() {
     
     VkBufferCreateInfo bufferInfo{};
     bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.size = susanne_mesh->buffer_views[3].size;
+    bufferInfo.size = susanne_mesh->buffers[0].size;
     bufferInfo.usage = VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-
     bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
     if (vkCreateBuffer(device, &bufferInfo, nullptr, &indexBuffer) != VK_SUCCESS) {
@@ -30,5 +29,6 @@ void Renderer::create_index_buffer() {
     void* data;
     vkMapMemory(device, indexBufferMemory, 0, bufferInfo.size, 0, &data);
     memcpy(data, susanne_mesh->buffers[0].data, bufferInfo.size);
+    //memcpy(data, susanne_mesh->buffer_views[3].data, bufferInfo.size);
     vkUnmapMemory(device, indexBufferMemory);
 }

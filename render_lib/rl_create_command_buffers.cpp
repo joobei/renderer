@@ -40,10 +40,10 @@ void Renderer::create_command_buffers() {
         VkDeviceSize offsets[] = {0};
         vkCmdBindVertexBuffers(commandBuffers[i], 0, 1, vertexBuffers, offsets);
         VkIndexType indexType = VK_INDEX_TYPE_UINT16;
-        vkCmdBindIndexBuffer(commandBuffers[i],indexBuffer,0,indexType);
+        vkCmdBindIndexBuffer(commandBuffers[i], indexBuffer,susanne_mesh->accessors[3].buffer_view->offset, indexType);
         uint32_t vertex_count = susanne_mesh->accessors[0].count;
         uint32_t index_count = susanne_mesh->accessors[3].count;
-        // vkCmdDraw(commandBuffers[i], vertex_count, 1, 0, 0); //left here for comparison
+        //vkCmdDraw(commandBuffers[i], vertex_count, 1, 0, 0); //left here for comparison
         vkCmdDrawIndexed(commandBuffers[i],index_count,1,0,0,0);
         vkCmdEndRenderPass(commandBuffers[i]);
 
