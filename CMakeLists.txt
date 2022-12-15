@@ -38,6 +38,16 @@ endfunction()
 compile_shader("vertex" "vert")
 compile_shader("fragment" "frag")
 
+add_custom_command(
+        OUTPUT susanne.gltf
+        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/susanne.gltf $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/
+        DEPENDS ${PROJECT_SOURCE_DIR}/susanne.gltf
+        VERBATIM)
+
+add_custom_target(assets DEPENDS susanne.gltf)
+
+
 add_executable (${PROJECT_NAME} Renderer.cpp vertex.spv fragment.spv)
+add_dependencies(${PROJECT_NAME} assets)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_link_libraries(${PROJECT_NAME} render_lib)
