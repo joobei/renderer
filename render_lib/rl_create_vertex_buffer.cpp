@@ -3,13 +3,13 @@
 void Renderer::create_vertex_buffer() {
     
     cgltf_options options = {cgltf_file_type_gltf};
-    cgltf_result result = cgltf_parse_file(&options, "susanne.gltf", &susanne_mesh);
+    cgltf_result result = cgltf_parse_file(&options, "asset.gltf", &susanne_mesh);
 
     size_t susanne_size = -1;
     
     if(result == cgltf_result_success) {
         memset(&options, 0, sizeof(cgltf_options));
-        cgltf_load_buffers(& options, susanne_mesh, "susanne.gltf");
+        cgltf_load_buffers(& options, susanne_mesh, "asset.gltf");
         susanne_size = susanne_mesh->buffers[0].size;
     }
     else
