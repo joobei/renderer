@@ -29,6 +29,5 @@ void Renderer::create_index_buffer() {
     void* data;
     vkMapMemory(device, indexBufferMemory, 0, bufferInfo.size, 0, &data);
     memcpy(data, susanne_mesh->buffers[0].data, bufferInfo.size);
-    //memcpy(data, susanne_mesh->buffer_views[3].data, bufferInfo.size);
     vkUnmapMemory(device, indexBufferMemory);
 }
