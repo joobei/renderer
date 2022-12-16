@@ -18,14 +18,20 @@ DESCRIPTION "Experimental Renderer"
 LANGUAGES CXX
 )
 
-
 add_subdirectory("render_lib")
 
 find_package(Vulkan REQUIRED)
 
-# Build HLSL shaders
-add_custom_target(shaders)
+#copy asset.gltf from source dir to where the target is being built
+add_custom_command(
+        OUTPUT asset.gltf
+        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/asset.gltf $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/
+        DEPENDS ${PROJECT_SOURCE_DIR}/asset.gltf
+        VERBATIM)
 
+add_custom_target(assets DEPENDS asset.gltf)
+
+#compile shaders and copy where the target is being built/shaders
 function(compile_shader SHADER_NAME SHADER_TYPE)
     add_custom_command(
         OUTPUT ${SHADER_NAME}.spv
@@ -37,15 +43,6 @@ endfunction()
 
 compile_shader("vertex" "vert")
 compile_shader("fragment" "frag")
-
-add_custom_command(
-        OUTPUT susanne.gltf
-        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/susanne.gltf $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/
-        DEPENDS ${PROJECT_SOURCE_DIR}/susanne.gltf
-        VERBATIM)
-
-add_custom_target(assets DEPENDS susanne.gltf)
-
 
 add_executable (${PROJECT_NAME} Renderer.cpp vertex.spv fragment.spv)
 add_dependencies(${PROJECT_NAME} assets)
