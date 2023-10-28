@@ -1,4 +1,4 @@
-# Toy renderer based on vulkan-tutorial.
+# Toy renderer to test Signed Distance Fields Global Illumination.
 
 ## Build Instructions
 ### Linux/Macos
